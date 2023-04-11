@@ -11,7 +11,6 @@ import testAuthMiddleware from './middleware/testAuthMiddleware.js'
 
 import bodyParser from 'body-parser'
 
-import openaiRoutes from './routes/openaiRoutes.js'
 
 dotenv.config()
 
@@ -46,12 +45,14 @@ app.get('/authorized', function (req, res) {
 })
 
 app.get('/', (req, res) => {
-  res.send("Welcome to the Ideas")
+  res.send("Welcome to the Ideas API");
 
  
 });
 
 app.use('/ideas', ideaRoutes)
+
+//jwt Check Only on this endpoint
 app.use('/users', userRouter,jwtCheck)
 
 // prevents backend from crashing when error occurs
