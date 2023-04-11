@@ -38,7 +38,7 @@ const jwtCheck =
   process.env.NODE_ENV === 'test' ? testAuthMiddleware : authMiddleware
 
 // enforce on all endpoints
-// app.use(jwtCheck)
+app.use(jwtCheck)
 
 app.get('/authorized', function (req, res) {
   res.send('Secured Resource')
@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 app.use('/ideas', ideaRoutes)
 
 //jwt Check Only on this endpoint
-app.use('/users', userRouter,jwtCheck)
+app.use('/users', userRouter)
 
 // prevents backend from crashing when error occurs
 app.use((req, res, next) => {
