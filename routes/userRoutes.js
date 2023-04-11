@@ -11,6 +11,7 @@ const router = express.Router()
 
 
 router.get('/:id', getUserByID)
+
 router.post('/create', createUser)
 
 router.post('/swipe', swipe)

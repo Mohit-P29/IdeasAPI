@@ -19,19 +19,12 @@ export const createUser = async (req, res) => {
         data: user,
       })
     } else {
-      user = await User.findOne({ email })
-
-      if (user) {
-        console.log('DEBUG: Found User with Same Email')
-        user.auth0Id = auth0Id
-        await user.save()
-      } else {
+      
         console.log('DEBUG: Creating New User')
         user = new User({ email: email, name: name, auth0Id: auth0Id })
         await user.save()
-      }
-
-      res.status(201).json({
+      
+        res.status(201).json({
         success: true,
         message: 'User Has been saved ',
         data: user,
