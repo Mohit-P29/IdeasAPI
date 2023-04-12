@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 
 app.use('/ideas', ideaRoutes)
 
-//jwt Check Only on this endpoint
+
 app.use('/users', userRouter)
 
 // prevents backend from crashing when error occurs

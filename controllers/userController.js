@@ -59,13 +59,13 @@ export const getUserByID = async (req, res) => {
         .status(404)
         .json({ status: 'fail', message: 'No user found with that ID' })
     }
-    res.status(200).json({ status: 'success', data: user })
+   
 
     res.status(200).json({
       success: true,
       message: 'User Returned',
       data: user,
-    })
+    });
   } catch (err) {
     // Invalid id
     res.status(400).send();
