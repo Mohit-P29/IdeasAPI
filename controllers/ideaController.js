@@ -12,6 +12,7 @@ export const getIdeas = async (req, res) => {
 }
 
 export const getRandomIdea = async (req, res) => {
+  console.log("DEBUG: Inside getRandomIdea");
   try {
     // Get the Auth0 ID from the request object
     const auth0Id = req.auth.payload.sub
@@ -47,6 +48,8 @@ export const getRandomIdea = async (req, res) => {
         throw error
       }
     }
+
+    
 
     const randomIndex = Math.floor(Math.random() * count)
     const idea = await Idea.findOne({ _id: { $nin: swipedIdeaIds } }).skip(
