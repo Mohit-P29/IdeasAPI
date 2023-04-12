@@ -4,7 +4,7 @@ import Idea from '../models/ideaModel.js'
 // save new user to database
 export const createUser = async (req, res) => {
   try {
-    console.log('DEBUG: Inside CreateUser()');
+    console.log('DEBUG: Inside CreateUser()')
 
     const { email, name } = req.body
     const auth0Id = req.auth.payload.sub
@@ -12,18 +12,30 @@ export const createUser = async (req, res) => {
     let user = await User.findOne({ auth0Id })
 
     if (user) {
-      
-      res.json({data: user});
-
+      console.log('DEBUG: Found Existing User')
+      res.status(200).json({
+        success: true,
+        error: 'User is already saved so will be retruning it',
+        data: user,
+      })
     } else {
-      
-        console.log('DEBUG: Creating New User');
-        user = new User({ email: email, name: name, auth0Id: auth0Id });
-        await user.save();
+      user = await User.findOne({ email })
 
-        res.json({data: user});
-      
-       
+      if (user) {
+        console.log('DEBUG: Found User with Same Email')
+        user.auth0Id = auth0Id
+        await user.save()
+      } else {
+        console.log('DEBUG: Creating New User')
+        user = new User({ email: email, name: name, auth0Id: auth0Id })
+        await user.save()
+      }
+
+      res.status(201).json({
+        success: true,
+        message: 'User Has been saved ',
+        data: user,
+      })
     }
   } catch (err) {
     console.error(err)
