@@ -11,13 +11,27 @@ import testAuthMiddleware from './middleware/testAuthMiddleware.js'
 
 import bodyParser from 'body-parser'
 
-import openaiRoutes from './routes/openaiRoutes.js'
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+
+// C:/cb/cb-js
+console.log(__dirname);
+
+// C:\cb\cb-js\index.html
+console.log(path.join(__dirname, 'index.html'));
 
 dotenv.config()
 
 connectDB()
 
 const app = express()
+app.use(express.static(__dirname));
+
 
 app.use(express.json())
 // ---MIDDLE WARE---
@@ -41,12 +55,21 @@ const jwtCheck =
 // enforce on all endpoints
 app.use(jwtCheck)
 
+
+
 app.get('/authorized', function (req, res) {
   res.send('Secured Resource')
 })
 
-app.use('/ideas', ideaRoutes)
-app.use('/users', userRouter)
+
+
+app.use('/ideas', ideaRoutes);
+app.use('/users', userRouter);
+
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
 
 // prevents backend from crashing when error occurs
 app.use((req, res, next) => {

@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/oguzgezginci/ideasGPT/issues"
   },
-  "homepage": "https://github.com/oguzgezginci/ideasGPT#readme",
+  "homepage": ".",
   "dependencies": {
     "@mui/material": "^5.11.16",
     "@mui/styled-engine-sc": "^5.11.11",
