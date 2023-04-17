@@ -11,6 +11,7 @@ import testAuthMiddleware from './middleware/testAuthMiddleware.js'
 
 import bodyParser from 'body-parser'
 
+import openaiRoutes from './routes/openaiRoutes.js'
 
 dotenv.config()
 
@@ -26,7 +27,7 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }))
 
 const PORT = process.env.PORT || 5000
 //app.use(cors())
-app.use(cors());
+app.use(cors())
 
 const authMiddleware = auth({
   audience: 'https://dev-glrfz0b04ozteyjy.us.auth0.com/api/v2/',
@@ -44,15 +45,7 @@ app.get('/authorized', function (req, res) {
   res.send('Secured Resource')
 })
 
-app.get('/', (req, res) => {
-  res.send("Welcome to the Ideas API");
-
- 
-});
-
 app.use('/ideas', ideaRoutes)
-
-
 app.use('/users', userRouter)
 
 // prevents backend from crashing when error occurs

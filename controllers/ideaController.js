@@ -12,7 +12,6 @@ export const getIdeas = async (req, res) => {
 }
 
 export const getRandomIdea = async (req, res) => {
-  console.log("DEBUG: Inside getRandomIdea");
   try {
     // Get the Auth0 ID from the request object
     const auth0Id = req.auth.payload.sub
@@ -22,7 +21,10 @@ export const getRandomIdea = async (req, res) => {
     const swipedIdeaIds = user.swipedIdeas.map((swipe) => swipe.idea)
 
     // Get the count of ideas not in the user's swipedIdeas array
-    const count = await Idea.countDocuments({ _id: { $nin: swipedIdeaIds } })
+    const count = await Idea.countDocuments({
+      _id: { $nin: swipedIdeaIds },
+      claimed: false,
+    })
 
     if (count === 0) {
       try {
@@ -49,12 +51,11 @@ export const getRandomIdea = async (req, res) => {
       }
     }
 
-    
-
     const randomIndex = Math.floor(Math.random() * count)
-    const idea = await Idea.findOne({ _id: { $nin: swipedIdeaIds } }).skip(
-      randomIndex
-    )
+    const idea = await Idea.findOne({
+      _id: { $nin: swipedIdeaIds },
+      claimed: false,
+    }).skip(randomIndex)
 
     if (idea) {
       res.json({ id: idea._id, text: idea.text, likes: idea.likes })
