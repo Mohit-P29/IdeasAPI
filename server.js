@@ -11,27 +11,13 @@ import testAuthMiddleware from './middleware/testAuthMiddleware.js'
 
 import bodyParser from 'body-parser'
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-
-const __filename = fileURLToPath(import.meta.url);
-
-const __dirname = path.dirname(__filename);
-
-// C:/cb/cb-js
-console.log(__dirname);
-
-// C:\cb\cb-js\index.html
-console.log(path.join(__dirname, 'index.html'));
+import openaiRoutes from './routes/openaiRoutes.js'
 
 dotenv.config()
 
 connectDB()
 
 const app = express()
-app.use(express.static(__dirname));
-
 
 app.use(express.json())
 // ---MIDDLE WARE---
@@ -40,8 +26,8 @@ app.use(express.json())
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 
 const PORT = process.env.PORT || 5000
-//app.use(cors())
 app.use(cors())
+//app.use(cors({ credentials: true, origin: 'https://mohitp4tel.com/' }))
 
 const authMiddleware = auth({
   audience: 'https://dev-glrfz0b04ozteyjy.us.auth0.com/api/v2/',
@@ -55,21 +41,12 @@ const jwtCheck =
 // enforce on all endpoints
 app.use(jwtCheck)
 
-
-
 app.get('/authorized', function (req, res) {
   res.send('Secured Resource')
 })
 
-
-
-app.use('/ideas', ideaRoutes);
-app.use('/users', userRouter);
-
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
+app.use('/ideas', ideaRoutes)
+app.use('/users', userRouter)
 
 // prevents backend from crashing when error occurs
 app.use((req, res, next) => {
