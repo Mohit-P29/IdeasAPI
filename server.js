@@ -26,8 +26,8 @@ app.use(express.json())
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 
 const PORT = process.env.PORT || 5000
-app.use(cors())
-//app.use(cors({ credentials: true, origin: 'https://mohitp4tel.com/' }))
+//app.use(cors())
+app.use(cors({ credentials: true, origin: ['https://mohitp4tel.com/', 'http://localhost.com:3000/'] }))
 
 const authMiddleware = auth({
   audience: 'https://dev-glrfz0b04ozteyjy.us.auth0.com/api/v2/',
